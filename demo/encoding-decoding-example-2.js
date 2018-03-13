@@ -12,6 +12,6 @@ console.log(encode("www.google.com", existingURLs));
 console.log(encode("www.new-website.com", existingURLs));
 
 // decoder example
-// console.log(decode("MQ==", existingURLs));
-// console.log(decode("Mg==", existingURLs));
-// console.log(decode("Xya0", existingURLs)); // this will throw an Error because this hash does not exist in URLs
+console.log(decode("MQ==", existingURLs));
+console.log(decode("Mg==", existingURLs));
+console.log(decode("Xya0", existingURLs)); // this will throw an Error because this hash does not exist in URLs
