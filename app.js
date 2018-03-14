@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const shortenUrl = require("./routes/shorten-url");
-const expandURL = require("./routes/expand-url");
-const someHash = require("./routes/somehash");
+const fetch = require("fetch");
 
 // load our own helper functions
 const encode = require("./demo/encode");
@@ -16,9 +14,48 @@ const existingURLs = [
   { id: "2", url: "www.facebook.com", hash: "Mg==" }
 ];
 
-app.use("/shorten-url", shortenUrl);
-app.use("/expand-url", expandURL);
-app.use("/:someHash", someHash);
+// TODO: Implement functionalities specified in README
+app.get("/:someHash", function(request, response) {
+  try {
+    const hashObj = request.params.someHash;
+
+    response.status(200);
+    response.redirect("http://" + decode(hashObj, existingURLs));
+  } catch (e) {
+    response.status(404);
+    response.json({
+      message: `URL with hash value '${request.params.someHash}' does not exist`
+    });
+  }
+});
+
+app.post("/shorten-url/", function(request, response) {
+  fetch.fetchUrl("http://" + request.body.url, (error, meta, body) => {
+    if (error) {
+      response.status(404);
+      response.json({ message: "Invalid URL" });
+    } else {
+      response.status(200);
+      response.json({ hash: `${encode(request.body.url, existingURLs)}` });
+    }
+  });
+});
+
+app.post("/expand-url/", function(request, response) {
+  const hashValue = request.body.hash;
+  console.log(hashValue);
+
+  try {
+    const expandURL = decode(hashValue, existingURLs);
+    response.status(200);
+    response.json({ url: expandURL });
+  } catch (e) {
+    response.status(404);
+    response.json({
+      message: `There is no long URL registered for hash value '${hashValue}'`
+    });
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
