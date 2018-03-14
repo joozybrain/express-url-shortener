@@ -36,9 +36,23 @@ app.post("/shorten-url/", function(request, response) {
       response.json({ message: "Invalid URL" });
     } else {
       response.status(200);
-      response.json({ hash: `${encode(request.body.url, existingURLs)}` });
+      if (
+        existingURLs.filter(element => element.url === request.body.url)
+          .length === 0
+      ) {
+        let newObj = {
+          id: existingURLs.length + 1,
+          url: request.body.url,
+          hash: encode(request.body.url, existingURLs)
+        };
+        existingURLs.push(newObj);
+        response.json({ hash: `${encode(request.body.url, existingURLs)}` });
+      } else {
+        response.json({ hash: `${encode(request.body.url, existingURLs)}` });
+      }
     }
   });
+  console.log(existingURLs);
 });
 
 app.post("/expand-url/", function(request, response) {
@@ -55,6 +69,10 @@ app.post("/expand-url/", function(request, response) {
       message: `There is no long URL registered for hash value '${hashValue}'`
     });
   }
+});
+
+app.get("/", function(request, response) {
+  response.send("Hello World");
 });
 
 // catch 404 and forward to error handler
