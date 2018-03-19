@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const URL = require("../model/URL_model");
+const ID = require("../model/id_model");
 const fetch = require("fetch");
 const encode = require("../demo/encode");
 
@@ -13,12 +14,18 @@ router.post("/", async (request, response, next) => {
       } else {
         response.status(200);
         const updateUrl = await URL.findOne({ url: request.body.url });
+
         if (updateUrl) {
           response.json({ message: "url exists" });
         } else {
           const newUrl = new URL({
             url: request.body.url,
-            hash: encode(request.body.url,[{}])
+            hash: encode(
+              request.body.url,
+              await URL.find({}, urlObj => {
+                return urlObj;
+              })
+            )
           });
           await newUrl.save();
           //console.log(newUrl);

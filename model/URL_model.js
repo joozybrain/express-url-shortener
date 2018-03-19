@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const urlSchema = new mongoose.Schema({
+  
   url: String,
   hash: String,
   created: {
