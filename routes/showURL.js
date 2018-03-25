@@ -6,6 +6,7 @@ router.get("/", async (request, response, next) => {
   try {
     const urls = await URL.find({});
     response.json({ url: urls });
+  
   } catch (err) {
     next(err);
   }

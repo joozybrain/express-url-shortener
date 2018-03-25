@@ -17,7 +17,8 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
     "fetch": "^1.1.0",
-    "mongoose": "^5.0.10"
+    "mongoose": "^5.0.10",
+    "supertest": "^3.0.0"
   },
   "devDependencies": {
     "jest": "^22.4.2"

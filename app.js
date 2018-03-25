@@ -4,7 +4,7 @@ const fetch = require("fetch");
 const shortenUrl = require("./routes/shortenURL");
 const showURL = require("./routes/showURL");
 const expandURL = require("./routes/expandURL");
-const getHash = require("./routes/getHash")
+const getHash = require("./routes/getHash");
 
 // load our own helper functions
 const encode = require("./demo/encode");
@@ -15,13 +15,7 @@ app.use(bodyParser.json());
 app.use("/shorten-url", shortenUrl);
 app.use("/", showURL);
 app.use("/expand-url", expandURL);
-app.use("/", getHash)
-
-const existingURLs = [
-  { id: "1", url: "www.google.com", hash: "MQ==" },
-  { id: "2", url: "www.facebook.com", hash: "Mg==" }
-];
-
+app.use("/", getHash);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
